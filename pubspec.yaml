@@ -36,6 +36,14 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
 
+  dio: ^5.5.0+1                 # HTTP 요청. (TMDB API 통신)
+  freezed_annotation: ^2.4.1    # 어노테이션
+  json_annotation: ^4.9.0       # JSON 직렬화 지원
+  flutter_dotenv: ^5.1.0        # .env 파일 읽기 (API 토큰 관리)
+  cached_network_image: ^3.3.1  # 이미지 캐싱 (포스터 성능 개선)
+  intl: ^0.19.0                 # 날짜, 숫자 포맷 (개봉일 표시 등)
+  flutter_riverpod: ^2.6.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -46,7 +54,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
-
+  build_runner: ^2.4.11         # 코드 자동 생성기 (freezed, json_serializable 실행용)
+  freezed: ^2.5.2               # 불변 클래스 생성
+  json_serializable: ^6.8.0     # JSON 직렬화 생성
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -59,9 +69,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - env
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

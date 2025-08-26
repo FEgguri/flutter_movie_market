@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_movie_market/core/env/env.dart';
+import 'package:flutter_movie_market/env/env.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Dio를 앱 전역에서 재사용하기 위한 팩토리.

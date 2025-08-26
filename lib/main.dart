@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized(); //포기화
   await dotenv.load(fileName: ".env"); // .env 로드
   runApp(const ProviderScope(child: MyApp())); // 전역 DI 컨테이너
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_market/home_page.dart';
+import 'package:flutter_movie_market/presentation/home/home_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() async {
-  //WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진 초기화
-  //await dotenv.load(fileName: ".env"); // .env 파일 로드
-  runApp(const ProviderScope(child: MyApp()));
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env"); // .env 로드
+  runApp(const ProviderScope(child: MyApp())); // 전역 DI 컨테이너
 }
 
 class MyApp extends StatelessWidget {

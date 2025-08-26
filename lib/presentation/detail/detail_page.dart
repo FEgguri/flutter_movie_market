@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-/// Hero 착지 화면. 지금은 포스터만 크게. 데이터 연결 후 확장.
 class DetailPage extends StatelessWidget {
   final int movieId;
   final String heroTag;
@@ -22,7 +21,7 @@ class DetailPage extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         children: [
           Hero(
-            tag: heroTag, // 이유: Home과 동일 tag로 전환 연속성 확보
+            tag: heroTag, // Home과 동일 tag
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: CachedNetworkImage(

@@ -90,6 +90,33 @@ class DetailScreen extends ConsumerWidget {
                       '${detail.voteAverage.toStringAsFixed(1)} (${detail.voteCount})'),
                 ],
               ),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: (detail.productionCompanyLogos ?? const <String>[])
+                    .map(
+                      (g) => ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: CachedNetworkImage(
+                          imageUrl: _fullUrl(g),
+                          placeholder: (_, __) => Container(
+                            height: 55,
+                            width: 100,
+                            color: Colors.grey.shade900,
+                            alignment: Alignment.center,
+                            child: const Icon(Icons.image, size: 36),
+                          ),
+                          errorWidget: (_, __, ___) => Container(
+                            height: 300,
+                            color: Colors.grey.shade800,
+                            alignment: Alignment.center,
+                            child: const Icon(Icons.broken_image, size: 36),
+                          ),
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
             ],
           ),
         ],

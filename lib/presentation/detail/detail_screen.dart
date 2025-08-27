@@ -64,30 +64,32 @@ class DetailScreen extends ConsumerWidget {
           const SizedBox(height: 8),
           Text(detail.overview.isEmpty ? '개요 없음' : detail.overview),
           const SizedBox(height: 12),
-          // Wrap(
-          //   spacing: 8,
-          //   runSpacing: 8,
-          //   children:
-
-          //    detail.genres
-          //       .map((g) => Chip(
-          //             label: Text(g),
-          //             backgroundColor: Colors.grey.shade900,
-          //             padding: const EdgeInsets.symmetric(horizontal: 6),
-          //           ))
-          //       .toList(),
-          // ),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: (detail.genres ?? const <String>[])
+                .map((g) => Chip(
+                      label: Text(g),
+                      backgroundColor: Colors.grey.shade900,
+                      padding: const EdgeInsets.symmetric(horizontal: 6),
+                    ))
+                .toList(),
+          ),
           const SizedBox(height: 12),
-          Row(
+          Column(
             children: [
-              const Icon(Icons.timer, size: 18),
-              const SizedBox(width: 6),
-              Text('${detail.runtime}분'),
-              const SizedBox(width: 16),
-              const Icon(Icons.star, size: 18),
-              const SizedBox(width: 6),
-              Text(
-                  '${detail.voteAverage.toStringAsFixed(1)} (${detail.voteCount})'),
+              Row(
+                children: [
+                  const Icon(Icons.timer, size: 18),
+                  const SizedBox(width: 6),
+                  Text('${detail.runtime}분'),
+                  const SizedBox(width: 16),
+                  const Icon(Icons.star, size: 18),
+                  const SizedBox(width: 6),
+                  Text(
+                      '${detail.voteAverage.toStringAsFixed(1)} (${detail.voteCount})'),
+                ],
+              ),
             ],
           ),
         ],

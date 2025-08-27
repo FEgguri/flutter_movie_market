@@ -7,7 +7,6 @@ import 'package:flutter_movie_market/domain/usecase/fetch_now_playing_movies_use
 import 'package:flutter_movie_market/domain/usecase/fetch_popular_movies_usecase.dart';
 import 'package:flutter_movie_market/domain/usecase/fetch_top_rated_movies_usercase.dart';
 import 'package:flutter_movie_market/domain/usecase/fetch_upcoming_movies_usecase.dart';
-import 'package:flutter_movie_market/presentation/home/home_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final _moviedatasourceProvider = Provider<MovieDataSource>((ref) {
@@ -19,7 +18,7 @@ final _movieRepositoryProvider = Provider<MovieRepository>((ref) {
   return MovieRepositoryImpl(dataSource);
 });
 
-final _fetchMovieDetailUseCaseProvider = Provider(
+final fetchMovieDetailUseCaseProvider = Provider(
   (ref) {
     final movieRepository = ref.read(_movieRepositoryProvider);
     return FetchMovieDetailUsecase(movieRepository);
@@ -53,23 +52,3 @@ final fetchUpcomingMoviesUseCaseProvider = Provider(
     return FetchUpcomingMoviesUsecase(movieRepository);
   },
 );
-
-// --- Presentation Layer (ViewModels) ---
-// final homeViewModelProvider =
-//     StateNotifierProvider<HomeViewModel, HomeState>((ref) {
-//   return HomeViewModel(
-//     fetchPopularMoviesUsecase: ref.read(fetchPopularMoviesUseCaseProvider),
-//     fetchNowPlayingMoviesUsecase: ref.read(fetchNowPlayMoviesUseCaseProvider),
-//     fetchTopRatedMoviesUsecase: ref.read(fetchTopRateMoviesUseCaseProvider),
-//     fetchUpcomingMoviesUsecase: ref.read(fetchUpcomingMoviesUseCaseProvider),
-//   );
-// });
-
-// final detailViewModelProvider =
-//     StateNotifierProvider.family<DetailViewModel, DetailState, int>(
-//         (ref, movieId) {
-//   return DetailViewModel(
-//     movieId: movieId,
-//     fetchMovieDetailUsecase: ref.read(_fetchMovieDetailUsecaseProvider),
-//   );
-// });

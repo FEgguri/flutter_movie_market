@@ -1,39 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_market/domain/entity/movie.dart';
-import 'package:flutter_movie_market/presentation/detail/detail_page.dart';
+import 'package:flutter_movie_market/presentation/detail/detail_screen.dart';
 import 'package:flutter_movie_market/presentation/widgets/movie_poster.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'home_view_model.dart';
 
-class HomePage extends ConsumerWidget {
-  const HomePage({super.key});
+class HomeScreen extends ConsumerWidget {
+  const HomeScreen({super.key});
 
   Widget _featured(BuildContext context, List<Movie>? m) {
     final w = MediaQuery.of(context).size.width - 40; //  좌우 패딩 20씩 제외
     final h = w * 9 / 16;
-    return m == null || m.isEmpty
-        ? SizedBox(
-            width: w,
-            height: h,
-            child: const Center(child: CircularProgressIndicator()),
-          )
-        : MoviePoster(
-            heroTag: 'featured_${m.first.id}',
-            imageUrl: m.first.posterPath,
-            width: w,
-            height: h,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => DetailPage(
-                      movieId: m.first.id,
-                      heroTag: 'featured_${m.first.id}',
-                      imageUrl: m.first.posterPath),
-                ),
-              );
-            },
-          );
+    if (m == null || m.isEmpty) {
+      return SizedBox(
+        width: w,
+        height: h,
+        child: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    final first = m.first;
+    final tag = 'featured_${first.id}';
+    return MoviePoster(
+      heroTag: 'featured_${m.first.id}',
+      imageUrl: 'https://image.tmdb.org/t/p/w500${m.first.posterPath}',
+      width: w,
+      height: h,
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => DetailScreen(
+                movie: first, // ✅ Movie 객체 전달
+                heroTag: tag,
+              ),
+            ));
+      },
+    );
   }
 
 // 공통 가로 섹션. 인기순만 rank 표시.
@@ -76,10 +79,10 @@ class HomePage extends ConsumerWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => DetailPage(
-                                movieId: m.id,
-                                heroTag: tag,
-                                imageUrl: m.posterPath),
+                            builder: (_) => DetailScreen(
+                              movie: m, // ✅ Movie 객체 전달
+                              heroTag: tag,
+                            ),
                           ),
                         );
                       },

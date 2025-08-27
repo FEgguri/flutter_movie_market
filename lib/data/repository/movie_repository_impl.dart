@@ -12,18 +12,28 @@ class MovieRepositoryImpl implements MovieRepository {
   Future<MovieDetail?> fetchMovieDetail(int id) async {
     final source = await movieDataSource.fetchMovieDetail(id);
     if (source == null) return null;
+    final genres = source.genres;
+    final logos = source.productionCompanies;
 
     return MovieDetail(
-      budget: source.budget,
-      genres: List.from(
-        source.genres.map((e) => e.name),
-      ),
+      budget: source.budget ?? 1,
+      genres:
+          // null,
+          genres == null
+              ? []
+              : List.from(
+                  genres.map((e) => e.name),
+                ),
       id: source.id,
-      productionCompanyLogos: List.from(
-        source.productionCompanies.map(
-          (e) => e.logoPath,
-        ),
-      ),
+      productionCompanyLogos:
+          // null,
+          logos == null
+              ? []
+              : List.from(
+                  logos.map(
+                    (e) => e.logoPath ?? '',
+                  ),
+                ),
       overview: source.overview,
       popularity: source.popularity,
       releaseDate: source.releaseDate,

@@ -1,9 +1,9 @@
 class MovieDetailDto {
-  bool? adult;
+  bool adult;
   String backdropPath;
   dynamic belongsToCollection;
   int budget;
-  List<Genre> genres;
+  List<Genre>? genres;
   String homepage;
   int id;
   String imdbId;
@@ -94,7 +94,9 @@ class MovieDetailDto {
         "backdrop_path": backdropPath,
         "belongs_to_collection": belongsToCollection,
         "budget": budget,
-        "genres": List<dynamic>.from(genres.map((x) => x.toJson())),
+        "genres": genres == null
+            ? []
+            : List<dynamic>.from(genres!.map((x) => x.toJson())),
         "homepage": homepage,
         "id": id,
         "imdb_id": imdbId,

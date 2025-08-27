@@ -65,7 +65,6 @@ class HomeViewModel extends Notifier<HomeState> {
     final usecase = ref.read(fetchNowPlayMoviesUseCaseProvider);
     print('usecase');
     final result = await usecase.execute();
-
     state = state.copyWith(nowPlaying: result);
   }
 

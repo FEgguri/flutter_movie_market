@@ -16,6 +16,7 @@ class DioClient {
 }
 
 class AuthInterceptor extends Interceptor {
+  @override
   void onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
@@ -27,5 +28,6 @@ class AuthInterceptor extends Interceptor {
         'accept': 'application/json',
       },
     );
+    super.onRequest(options, handler);
   }
 }

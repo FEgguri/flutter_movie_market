@@ -1,30 +1,35 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:flutter_movie_market/main.dart';
+import 'package:dio/dio.dart';
+import 'package:http_mock_adapter/http_mock_adapter.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  test('Dio GET now_playing mocked 200', () async {
+    final dio =
+        Dio(BaseOptions(baseUrl: 'https://api.themoviedb.org/3/movie/'));
+    final adapter = DioAdapter(dio: dio);
+    dio.httpClientAdapter = adapter;
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    final body = {
+      "page": 1,
+      "results": [
+        {"id": 1, "title": "Mock A"}
+      ],
+      "total_pages": 1,
+      "total_results": 1
+    };
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    adapter.onGet(
+      'movie/now_playing',
+      (server) => server.reply(200, body),
+      queryParameters: {'language': 'ko-KR', 'page': 1},
+    );
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    final res = await dio.get(
+      'movie/now_playing',
+      queryParameters: {'language': 'ko-KR', 'page': 1},
+    );
+
+    expect(res.statusCode, 200);
+    expect((res.data['results'] as List).length, 1);
   });
 }

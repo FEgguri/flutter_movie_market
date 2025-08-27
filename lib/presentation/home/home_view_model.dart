@@ -1,60 +1,76 @@
-import 'dart:math';
+import 'package:flutter_movie_market/domain/entity/movie.dart';
+import 'package:flutter_movie_market/presentation/widgets/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class MovieUI {
-  final int id;
-  final String title;
-  final String posterUrl;
+@freezed
+class HomeState {
+  //관리해야할 변수 선언
+  final List<Movie>? upcoming;
+  final List<Movie>? nowPlaying;
+  final List<Movie>? popular;
+  final List<Movie>? topRated;
 
-  const MovieUI(this.id, this.title, this.posterUrl);
+  HomeState({
+    this.upcoming,
+    this.nowPlaying,
+    this.popular,
+    this.topRated,
+  });
+
+  HomeState copyWith({
+    List<Movie>? upcoming,
+    List<Movie>? nowPlaying,
+    List<Movie>? popular,
+    List<Movie>? topRated,
+  }) {
+    return HomeState(
+        nowPlaying: nowPlaying ?? this.nowPlaying,
+        popular: popular ?? this.popular,
+        topRated: topRated ?? this.topRated,
+        upcoming: upcoming ?? this.upcoming);
+  }
 }
 
-class HomeState {
-  final List<MovieUI> featured; // 상단 1장
-  final List<MovieUI> nowPlaying;
-  final List<MovieUI> popular;
-  final List<MovieUI> topRated;
-  final List<MovieUI> upcoming;
-  const HomeState({
-    required this.featured,
-    required this.nowPlaying,
-    required this.popular,
-    required this.topRated,
-    required this.upcoming,
-  });
+class HomeViewModel extends Notifier<HomeState> {
+  @override
+  HomeState build() {
+    fetchNowPlayingMovies();
+    fetchPopularMovies();
+    fetchTopRatedMovies();
+    fetchUpcomingMovies();
+    return HomeState();
+  }
+
+  Future<void> fetchNowPlayingMovies() async {
+    final usecase = ref.read(fetchNowPlayMoviesUseCaseProvider);
+    print(usecase.excute());
+    final result = await usecase.excute();
+    print('build2');
+    state = state.copyWith(nowPlaying: result);
+  }
+
+  Future<void> fetchPopularMovies() async {
+    final usecase = ref.read(fetchPopularMoviesUseCaseProvider);
+    final result = await usecase.excute();
+
+    state = state.copyWith(popular: result);
+  }
+
+  Future<void> fetchTopRatedMovies() async {
+    final usecase = ref.read(fetchTopRateMoviesUseCaseProvider);
+    final result = await usecase.excute();
+
+    state = state.copyWith(topRated: result);
+  }
+
+  Future<void> fetchUpcomingMovies() async {
+    final usecase = ref.read(fetchUpcomingMoviesUseCaseProvider);
+    final result = await usecase.excute();
+
+    state = state.copyWith(upcoming: result);
+  }
 }
 
 final homeViewModelProvider =
-    AsyncNotifierProvider<HomeViewModel, HomeState>(() => HomeViewModel());
-
-class HomeViewModel extends AsyncNotifier<HomeState> {
-  @override
-  Future<HomeState> build() async {
-    return _loadMock();
-  }
-
-  Future<HomeState> _loadMock() async {
-    List<MovieUI> m(String seed) => List.generate(
-          20,
-          (i) => MovieUI(
-            i + 1,
-            'Movie $seed #${i + 1}',
-            'https://picsum.photos/seed/${seed}_$i/500/750',
-          ),
-        );
-
-    final popular = m('pop');
-    return HomeState(
-      featured: [popular.first],
-      nowPlaying: m('now'),
-      popular: popular,
-      topRated: m('top'),
-      upcoming: m('upc'),
-    );
-  }
-
-  Future<void> refresh() async {
-    state = const AsyncLoading();
-    state = AsyncData(await _loadMock());
-  }
-}
+    NotifierProvider<HomeViewModel, HomeState>(() => HomeViewModel());

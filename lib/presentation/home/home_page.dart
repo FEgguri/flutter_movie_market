@@ -11,8 +11,12 @@ class HomePage extends ConsumerWidget {
   Widget _featured(BuildContext context, List<Movie>? m) {
     final w = MediaQuery.of(context).size.width - 40; //  좌우 패딩 20씩 제외
     final h = w * 9 / 16;
-    return m == null
-        ? Text('empty')
+    return m == null || m.isEmpty
+        ? SizedBox(
+            width: w,
+            height: h,
+            child: const Center(child: CircularProgressIndicator()),
+          )
         : MoviePoster(
             heroTag: 'featured_${m.first.id}',
             imageUrl: m.first.posterPath,
@@ -51,12 +55,12 @@ class HomePage extends ConsumerWidget {
         const SizedBox(height: 12),
         SizedBox(
           height: 180, //각 리스트뷰 높이 180
-          child: items == null
-              ? Text('empty')
+          child: items == null || items.isEmpty
+              ? const Center(child: CircularProgressIndicator())
               : ListView.separated(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   scrollDirection: Axis.horizontal,
-                  itemCount: 20,
+                  itemCount: items.length > 20 ? 20 : items.length,
                   separatorBuilder: (_, __) => const SizedBox(width: 12),
                   itemBuilder: (context, index) {
                     final m = items[index];
@@ -90,11 +94,14 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeViewModelProvider);
-    //print(state.nowPlaying);
-    // final data = state.value;
+
     return Scaffold(
       appBar: AppBar(title: const Text('영화')),
-      body: ListView(
+      body:
+          // state.isLoading
+          //     ? const Center(child: CircularProgressIndicator())
+          //     :
+          ListView(
         children: [
           const SizedBox(height: 20),
           Padding(

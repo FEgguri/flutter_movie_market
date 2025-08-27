@@ -5,7 +5,7 @@ class FetchMovieDetailUsecase {
   final MovieRepository movieRepository;
   FetchMovieDetailUsecase(this.movieRepository);
 
-  Future<MovieDetail?> excute(int id) async {
+  Future<MovieDetail?> execute(int id) async {
     return await movieRepository.fetchMovieDetail(id);
   }
 }
